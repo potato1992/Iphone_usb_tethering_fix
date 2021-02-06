@@ -32,4 +32,4 @@ sudo modprobe ipheth
 It now should work now.
 
 - One more thing:
-It is expected that those process should be do again if the kernel has been updated.
+It is expected to repeat those processes if the kernel has been updated.
