@@ -1,4 +1,5 @@
 # Quick fix to Linux Iphone USB tethering with IOS 14 or higher
+(Tested with ubuntu 18.04, kernel 5.4.0-65, if you fail in the process, please download your own kernel, see bottom description)
 
 After IOS14, the USB tethering no loger works with [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice) when the Linux kernel is lower than 5.10.4, see the [issue](https://github.com/libimobiledevice/libimobiledevice/issues/1038)
 
@@ -34,3 +35,14 @@ It should work properly now.
 
 - One more thing:
 It is expected to repeat those processes if the kernel has been updated.
+
+# Note
+If you are facing problem with the make, please run "uname -r" to get your linux kernel version, and download the source file of the Kernel your are using (if not found, use the nearest version may also work).
+
+Then find the ipheth.c  at: drivers/net/usb/, copy it here, modify the code:
+```C
+//#define IPHETH_BUF_SIZE         1516
+//replace with:
+#define IPHETH_BUF_SIZE         1514
+```
+Then the compilation should pass.
