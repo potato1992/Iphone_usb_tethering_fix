@@ -12,7 +12,8 @@ git clone https://github.com/potato1992/Iphone_usb_tethering_fix.git
 2. Enter the project folder and make the ko file:
 ```bash
 cd Iphone_usb_tethering_fix/
-make
+chmod +x ./make.sh
+./make.sh
 ```
 3. Backup your original driver:
 ```bash
@@ -39,7 +40,7 @@ It is expected to repeat those processes if the kernel has been updated.
 # Note
 If you are facing problem with the make, please run "uname -r" to get your linux kernel version, and download the source file of the Kernel your are using (if not found, use the nearest version may also work).
 
-Then find the ipheth.c  at: drivers/net/usb/, copy it here, modify the code:
+Then find the ipheth.c  at: drivers/net/usb/, copy it to the project folder, modify the code:
 ```C
 //#define IPHETH_BUF_SIZE         1516
 //replace with:
