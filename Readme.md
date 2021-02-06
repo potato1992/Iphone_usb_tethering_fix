@@ -29,7 +29,7 @@ sudo cp ipheth.ko /lib/modules/$(uname -r)/kernel/drivers/net/usb/
 sudo modprobe ipheth
 ```
 
-It now should work now.
+It should work properly now.
 
 - One more thing:
 It is expected to repeat those processes if the kernel has been updated.
