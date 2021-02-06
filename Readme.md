@@ -8,8 +8,9 @@ Here I is a quick fix by rebuilding the ipheth driver with the revised code. To 
 ```bash
 git clone https://github.com/potato1992/Iphone_usb_tethering_fix.git
 ```
-2. Make the ko file:
+2. Enter the project folder and make the ko file:
 ```bash
+cd Iphone_usb_tethering_fix/
 make
 ```
 3. Backup your original driver:
