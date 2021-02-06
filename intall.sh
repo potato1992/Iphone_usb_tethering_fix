@@ -53,7 +53,7 @@ patch_ver_config() {
 		read -p "$(echo -e "Enter your choice: [${yellow}0-$i${NC}]"):" patch_ver_sel
 		[ -z "$patch_ver_sel" ] && patch_ver_sel=1
 		case $patch_ver_sel in
-		[1-9] | [0-9][0-9])
+		[0-9] | [0-9][0-9])
             if [ $patch_ver_sel -lt $n_patch ]; then
                 echo
                 echo -e "You have selected ${yellow}$patch_ver_sel${NC}. ${patch_array[patch_ver_sel]}"
