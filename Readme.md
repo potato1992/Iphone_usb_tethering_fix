@@ -44,7 +44,7 @@ This project inlclude the all revised version from Linux kernel git [repo histor
 
 If you are facing problem with the build, please refer to your Linux distributor and download the corresponding source file of the Kernel your are using (check by uname -r)
 
-Then find the **ipheth.c**  at: drivers/net/usb/, copy it to the **patches** folder, rerun the install.sh, check the **ipheth.c** in the project root folder and make sure it has been revised by the script, or do it manually, like the following:
+Then find the **ipheth.c**  at: drivers/net/usb/, copy it to the **patches** folder, rerun the install.sh, check the **ipheth.c** in the project root folder and make sure it has been revised by the script, or do it manually on the **ipheth.c** you put in the **patches** folder, like the following:
 ```C
 //#define IPHETH_BUF_SIZE         1516
 //replaced with:
