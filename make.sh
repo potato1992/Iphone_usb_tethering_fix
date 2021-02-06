@@ -1,19 +1,20 @@
 ver=$(uname -r)          # get kernel release version
 ver_num="${ver%.*-*}"        # remove suffix starting with '.' and containing '-'
-ver_num="${ver_num//.}"          # remove periods (a single `/` would do here)
 
-kernel_version=`uname -a|awk '{print $3}'`
+array=(`echo $ver_num | tr '.' ' '` ) 
+let ver_num=${array[0]}*1000+${array[1]}
 
-ver_div=50
+#version 5.0 as the division line
+ver_div=5000
 
 FILE=./ipheth.c
 if test -f "$FILE"; then
     echo "[INFO] $FILE exists, goto make directly"
 else
     echo "[INFO] Copying patch file..."
-        if [ $ver_num -gt $ver_div ]
+    if [ $ver_num -gt $ver_div ]
     then 
-        echo "[INFO] Kernel version $ver, using the patch 5.4.0"
+        echo "[INFO] Kernel version $ver, using the patch 5.3.0"
         cp ./patchs/ipheth_5.3.0.c ipheth.c
     else
         echo "[INFO] Kernel version $ver, using the patch 4.9.y"
