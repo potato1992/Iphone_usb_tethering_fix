@@ -1,5 +1,5 @@
 # Quick fix to Linux Iphone USB tethering with IOS 14 or higher
-(Tested with ubuntu 18.04, kernel 5.4.0-65, if you fail in the process, please download your own kernel, see bottom description)
+(Tested with ubuntu 18.04, kernel 5.4.0-65, if you fail in the build, please download your own kernel source, see bottom description)
 
 After IOS14, the USB tethering no loger works with [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice) when the Linux kernel is lower than 5.10.4, see the [issue](https://github.com/libimobiledevice/libimobiledevice/issues/1038)
 
@@ -9,25 +9,27 @@ Here is a quick fix by rebuilding the ipheth driver with the revised code. To us
 ```bash
 git clone https://github.com/potato1992/Iphone_usb_tethering_fix.git
 ```
-2. Enter the project folder and make the ko file:
+2. Enter the project folder and build the driver file:
 ```bash
 cd Iphone_usb_tethering_fix/
-chmod +x ./make.sh
-./make.sh
+chmod +x ./install.sh
+sudo ./install.sh
 ```
-3. Backup your original driver:
+- Follow the guide, and you can stop here if you successfully use the automatic installation.
+For manually installation after build:
+1. Backup your original driver:
 ```bash
 sudo cp /lib/modules/$(uname -r)/kernel/drivers/net/usb/ipheth.ko /lib/modules/$(uname -r)/kernel/drivers/net/usb/ipheth.ko.bak
 ```
-4. Remove the old driver:
+2. Remove the old driver:
 ```bash
 sudo rmmod ipheth
 ```
-5. Copy the built driver
+3. Copy the built driver
 ```bash
 sudo cp ipheth.ko /lib/modules/$(uname -r)/kernel/drivers/net/usb/
 ```
-6. Reload the new driver
+4. Reload the new driver
 ```bash
 sudo modprobe ipheth
 ```
@@ -38,12 +40,14 @@ It should work properly now.
 It is expected to repeat those processes if the kernel has been updated.
 
 # Note
-If you are facing problem with the make, please run "uname -r" to get your linux kernel version, and download the source file of the Kernel your are using (if not found, use the nearest version may also work).
+This project inlclude the all revised version from Linux kernel git [repo history](https://github.com/torvalds/linux/commits/master/drivers/net/usb/ipheth.c) for the **ipheth** driver from Linux 3.1 to Linux 5.9. However, sometimes third-party Linux distributor (like the odroid version) may revise this driver code, which can cause the build fail.
 
-Then find the ipheth.c  at: drivers/net/usb/, copy it to the project folder, modify the code:
+If you are facing problem with the build, please refer to your Linux distributor and download the corresponding source file of the Kernel your are using (check by uname -r)
+
+Then find the **ipheth.c**  at: drivers/net/usb/, copy it to the **patches** folder, rerun the install.sh, check the **ipheth.c** in the project root folder and make sure it has been revised by the script, or do it manually, like the following:
 ```C
 //#define IPHETH_BUF_SIZE         1516
-//replace with:
+//replaced with:
 #define IPHETH_BUF_SIZE         1514
 ```
 Then the compilation should pass.
