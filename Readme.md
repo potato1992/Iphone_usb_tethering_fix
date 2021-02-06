@@ -1,8 +1,8 @@
 # Quick fix to Linux Iphone USB tethering with IOS 14 or higher
 
-After IOS14, the USB tethering no loger works with libimobiledevice when the Linux kernel is lower than 5.10.4, see https://github.com/libimobiledevice/libimobiledevice/issues/1038.
+After IOS14, the USB tethering no loger works with [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice) when the Linux kernel is lower than 5.10.4, see the [issue](https://github.com/libimobiledevice/libimobiledevice/issues/1038)
 
-Here I is a quick fix by rebuilding the ipheth driver. To use it, follow the steps:
+Here I is a quick fix by rebuilding the ipheth driver with the revised code. To use it, follow the steps:
 
 1. Clone the project:
 ```bash
@@ -29,4 +29,7 @@ sudo cp ipheth.ko /lib/modules/$(uname -r)/kernel/drivers/net/usb/
 sudo modprobe ipheth
 ```
 
-It now should work.
+It now should work now.
+
+- One more thing:
+It is expected that those process should be do again if the kernel has been updated.
