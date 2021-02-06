@@ -1,7 +1,9 @@
+#!/bin/bash
+
 ver=$(uname -r)          # get kernel release version
 ver_num="${ver%.*-*}"        # remove suffix starting with '.' and containing '-'
 
-array=(`echo $ver_num | tr '.' ' '` ) 
+array=(`echo $ver_num | tr '.' ' '` )
 let ver_num=${array[0]}*1000+${array[1]}
 
 #version 5.0 as the division line

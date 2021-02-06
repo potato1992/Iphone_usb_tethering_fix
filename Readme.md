@@ -3,7 +3,7 @@
 
 After IOS14, the USB tethering no loger works with [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice) when the Linux kernel is lower than 5.10.4, see the [issue](https://github.com/libimobiledevice/libimobiledevice/issues/1038)
 
-Here I is a quick fix by rebuilding the ipheth driver with the revised code. To use it, follow the steps:
+Here is a quick fix by rebuilding the ipheth driver with the revised code. To use it, follow the steps:
 
 1. Clone the project:
 ```bash
