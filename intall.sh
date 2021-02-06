@@ -113,7 +113,7 @@ driver_install() {
 }
 
 # Root
-[[ $(id -u) != 0 ]] && echo -e "\n Please use ${red}sudo${NC} privilege to run ${yellow}~(^_^) ${none}\n" && exit 1
+[[ $(id -u) != 0 ]] && echo -e "\n Please use ${red}sudo${NC} privilege to run it ${yellow}~(^_^) ${none}\n" && exit 1
 
 patch_ver_config
 echo -e "${yellow}[INFO]${NC} Copying patch file..."
