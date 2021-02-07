@@ -13,7 +13,7 @@ git clone https://github.com/potato1992/Iphone_usb_tethering_fix.git
 ```bash
 cd Iphone_usb_tethering_fix/
 chmod +x ./install.sh
-sudo ./install.sh
+sudo bash ./install.sh
 ```
 - Follow the guide, and you can stop here if you successfully use the automatic installation.
 For manually installation after build:
@@ -40,9 +40,10 @@ It should work properly now.
 It is expected to repeat those processes if the kernel has been updated.
 
 # Note
-This project inlclude the all revised version from Linux kernel git [repo history](https://github.com/torvalds/linux/commits/master/drivers/net/usb/ipheth.c) for the **ipheth** driver from Linux 3.1 to Linux 5.9. However, sometimes third-party Linux distributor (like the odroid version) may revise this driver code, which can cause the build fail.
+This project inlclude all the revised versions of the **ipheth** driver from Linux kernel git [repo history](https://github.com/torvalds/linux/commits/master/drivers/net/usb/ipheth.c)  from Linux 3.1 to Linux 5.9. However, there are two major possibilities that will cause the build fail:
 
-If you are facing problem with the build, please refer to your Linux distributor and download the corresponding source file of the Kernel your are using (check by uname -r)
+1. sometimes third-party Linux distributor (like the odroid version) may revise this driver code, which can cause the build fail.
+In this case, please refer to your Linux distributor and download the corresponding source file of the Kernel your are using (check by uname -r)
 
 Then find the **ipheth.c**  at: drivers/net/usb/, copy it to the **patches** folder, manually change the **ipheth.c** you put in the **patches** folder, like the following:
 ```C
@@ -51,3 +52,17 @@ Then find the **ipheth.c**  at: drivers/net/usb/, copy it to the **patches** fol
 #define IPHETH_BUF_SIZE         1514
 ```
 Rerun the install.sh, then the compilation should pass.
+
+2. As the project can not include all linux versions source code, the compilzation will rely on local Linux header files. It will fail if your system does not comes with the Linux header files, check it by running:
+```bash
+ls -l /lib/modules/$(uname -r)/build
+```
+The output should be something like the following to indicate a proper soft link:
+```bash
+lrwxrwxrwx 1 root root 39 Jan 19 01:34 /lib/modules/5.4.0-65-generic/build -> /usr/src/linux-headers-5.4.0-65-generic
+```
+There are two possible solutions to it, 
+(1) Install the Linux header of the same version of uname -r.
+(2) Install a official version of ubuntu/debian in a vmware machine, then install and switch to the linux kernel version of the target PC, run the scripts and a **ipheth.ko** driver will be there, copy it to the desitination PC then perform a manual installation as instructed in the Readme.md.
+
+- This script will not work for openwrt user since openwrt does not come with neccesssy component to build the kernel module, please download the openwrt firmware source code, change the code **ipheth.c**  at: drivers/net/usb/, as instructed in Problem 1, then compile the openwrt driver using the toolkit from your openwrt distributor. 
