@@ -62,7 +62,9 @@ The output should be something like the following to indicate a proper soft link
 lrwxrwxrwx 1 root root 39 Jan 19 01:34 /lib/modules/5.4.0-65-generic/build -> /usr/src/linux-headers-5.4.0-65-generic
 ```
 There are two possible solutions to it, 
+
 (1) Install the Linux header of the same version of uname -r.
+
 (2) Install a official version of ubuntu/debian in a vmware machine, then install and switch to the linux kernel version of the target PC, run the scripts and a **ipheth.ko** driver will be there, copy it to the desitination PC then perform a manual installation as instructed in the Readme.md.
 
 - This script will not work for openwrt user since openwrt does not come with neccesssy component to build the kernel module, please download the openwrt firmware source code, change the code **ipheth.c**  at: drivers/net/usb/, as instructed in Problem 1, then compile the openwrt driver using the toolkit from your openwrt distributor. 
