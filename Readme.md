@@ -68,3 +68,16 @@ There are two possible solutions to it,
 (2) Install a official version of ubuntu/debian in a vmware machine, then install and switch to the linux kernel version of the target PC, run the scripts and a **ipheth.ko** driver will be there, copy it to the desitination PC then perform a manual installation as instructed in the Readme.md.
 
 - This script will not work for openwrt user since openwrt does not come with neccesssy component to build the kernel module, please download the openwrt firmware source code, change the code **ipheth.c**  at: drivers/net/usb/, as instructed in Problem 1, then compile the openwrt driver using the toolkit from your openwrt distributor. 
+
+## Raspberry pi
+If you fail in the build with the reson of missing Linux Kernel, like:
+make -C /lib/modules/5.10.11-v7+/build M=/home/pi/Iphone_usb_tethering_fix modules
+make[1]: *** /lib/modules/5.10.11-v7+/build: No such file or directory.  Stop.
+make: *** [Makefile:6: default] Error 2
+
+Things would be easy to fix this if you are using raspbian:
+```bash
+sudo apt-get install raspberrypi-kernel-headers
+```
+It seems that this command would install the Header of the newest kernel, thus you may want to try some newer patch like the ipheth_5.9-rc1.c to make it work.
+
