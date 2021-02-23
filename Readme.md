@@ -52,7 +52,7 @@ sudo kmodsign sha512 my_mok.priv my_mok.der /lib/modules/$(uname -r)/kernel/driv
 ```bash
 mokutil --import my_mok.der
 ```
-Your will be prompted to set a password, and please remember this password. Once this is done, reboot. Just before loading GRUB, shim will show a blue screen (which is actually another piece of the shim project called “MokManager”). use that screen to select “Enroll MOK” and follow the menus to finish the enrolling process. You can also look at some of the properties of the key you’re trying to add, just to make sure it’s indeed the right one using “View key”. MokManager will ask you for the password we typed in earlier here; and will save the key, and we’ll reboot again.
+Your will be prompted to set a password, and please remember this password. Once this is done, reboot. Just before loading GRUB, shim will show a blue screen (which is actually another piece of the shim project called **MokManager**). use that screen to select **Enroll MOK** and follow the menus to finish the enrolling process. You can also look at some of the properties of the key you’re trying to add, just to make sure it’s indeed the right one using **View key**. MokManager will ask you for the password we typed in earlier here; and will save the key, and we’ll reboot again.
 
 Also, please keep some keywords in mind of the certificate information thus you can identify the right cetificate to be installled:
 ```
