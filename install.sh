@@ -73,6 +73,55 @@ patch_ver_config() {
 }
 
 #install driver
+sign_module() {
+    # clear
+	echo
+    while :; do
+        echo -e "$yellow[INFO]$NC $yellow If you are using the security boot, you have to sign the module and import the generated certificate$NC"
+        echo -e "$yellow[INFO]$NC $yellow And also make sure the openssl is installed on your machine$NC"
+		read -p "$(echo -e "(Proceed to sign to module?: [${magenta}Y/N$NC]):") " auto_sign_driver
+		if [[ -z "$auto_sign_driver" ]]; then
+			error
+		else
+			if [[ "$auto_sign_driver" == [Yy] ]]; then
+				echo
+				echo -e "$yellow Automatical sign$NC"
+				echo "----------------------------------------------------------------"
+				echo          
+                echo -e "$yellow[INFO]$NC Generating the cetificate..."
+                openssl req -config ./openssl.cnf -new -x509 -newkey rsa:2048 -nodes -days 36500 -outform DER -keyout "my_mok.priv" -out "my_mok.der"
+                echo -e "$yellow[INFO]$NC Signing the new module..."
+                kmodsign sha512 my_mok.priv my_mok.der /lib/modules/$(uname -r)/kernel/drivers/net/usb/ipheth.ko
+                echo -e "$yellow[INFO]$NC Importing the generated certificate..."
+                echo -e "$yellow[INFO]$NC $yellow Please read this carefully:$NC"
+                echo -e "$yellow[INFO]$NC Your will be prompted to set a password, and please remember this password. Once this is done, reboot. Just before loading GRUB, shim will show a blue screen (which is actually another piece of the shim project called “MokManager”). use that screen to select “Enroll MOK” and follow the menus to finish the enrolling process. You can also look at some of the properties of the key you’re trying to add, just to make sure it’s indeed the right one using “View key”. MokManager will ask you for the password we typed in earlier here; and will save the key, and we’ll reboot again.$NC"
+                mokutil --import my_mok.der
+                echo -e "$yellow[INFO]$NC $yellow Please keep some keywords in mind of the certificate information thus you can identify the right cetificate to be installled:$NC"
+                echo -e "$yellow[INFO]$NC distinguished_name      = my_module_sign_name$NC"
+                echo -e "$yellow[INFO]$NC countryName             = CA$NC"
+                echo -e "$yellow[INFO]$NC stateOrProvinceName     = Alberta$NC"
+                echo -e "$yellow[INFO]$NC localityName            = Calgary$NC"
+                echo -e "$yellow[INFO]$NC 0.organizationName      = cyphermox$NC"
+                echo -e "$yellow[INFO]$NC commonName              = Secure Boot Signing$NC"
+                echo -e "$yellow[INFO]$NC emailAddress            = example@example.com$NC"
+                echo -e "$yellow[INFO]$NC Done"
+				break
+			elif [[ "$auto_sign_driver" == [Nn] ]]; then
+				echo
+				echo -e "$yellow[INFO]$NC Exit"
+				echo "----------------------------------------------------------------"
+				echo
+                exit 1
+				break
+			else
+				error
+			fi
+		fi
+
+	done
+}
+
+#install driver
 driver_install() {
     # clear
 	echo
@@ -129,6 +178,7 @@ case "$status" in
     0) echo -e "${yellow}[INFO]${NC} All makefiles passed";
        echo -e "${yellow}[INFO]${NC} Please continue to install the driver";
        driver_install
+       sign_module
         ;;
     1) echo -e "${yellow}[INFO]${NC} Target needs to be rebuilt"; ;;
     2) echo -e "${yellow}[INFO]${NC} Error(s) in make, please try other kernel choices or get the ${red}ipheth.c${NC} from your linux distributor"; 

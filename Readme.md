@@ -36,6 +36,35 @@ sudo modprobe ipheth
 
 It should work properly now.
 
+5. Security boot (if you need)
+
+Please install the openssl before this step
+
+(1) Generate the cetificate:
+```bash
+openssl req -config ./openssl.cnf -new -x509 -newkey rsa:2048 -nodes -days 36500 -outform DER -keyout "my_mok.priv" -out "my_mok.der"
+```
+(2) Sign the module
+```bash
+sudo kmodsign sha512 my_mok.priv my_mok.der /lib/modules/$(uname -r)/kernel/drivers/net/usb/ipheth.ko
+```
+(3) Import the certificate:
+```bash
+mokutil --import my_mok.der
+```
+Your will be prompted to set a password, and please remember this password. Once this is done, reboot. Just before loading GRUB, shim will show a blue screen (which is actually another piece of the shim project called “MokManager”). use that screen to select “Enroll MOK” and follow the menus to finish the enrolling process. You can also look at some of the properties of the key you’re trying to add, just to make sure it’s indeed the right one using “View key”. MokManager will ask you for the password we typed in earlier here; and will save the key, and we’ll reboot again.
+
+Also, please keep some keywords in mind of the certificate information thus you can identify the right cetificate to be installled:
+```
+distinguished_name      = my_module_sign_nam
+countryName             = CA
+stateOrProvinceName     = Alberta
+localityName            = Calgary
+0.organizationName      = cyphermox
+commonName              = Secure Boot Signing
+emailAddress            = example@example.com
+```
+
 - One more thing:
 It is expected to repeat those processes if the kernel has been updated.
 
